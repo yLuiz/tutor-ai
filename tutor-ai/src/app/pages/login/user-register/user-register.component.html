@@ -1,0 +1,64 @@
+<div class="form-container">
+  <div class="form-card">
+    <div class="logo">
+      <img src="../../../../assets/book-open.svg" alt="Logo">
+    </div>
+    <h2>Criar conta</h2>
+    <p class="subtitle">Junte-se ao Tutor de Português e melhore sua escrita</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label for="name">Nome completo</label>
+      <input id="name" type="text" placeholder="Seu nome completo" formControlName="name"
+        [class.invalid]="form.get('name')?.invalid && form.get('name')?.touched" />
+      <div class="error" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+        Nome é obrigatório.
+      </div>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="seu@email.com" formControlName="email"
+        [class.invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+      <div class="error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+        Email inválido.
+      </div>
+
+      <label for="password">Senha</label>
+      <div class="password-wrapper">
+        <input [type]="isPasswordVisible ? 'text' : 'password'" id="password" placeholder="Crie uma senha"
+          formControlName="password" [class.invalid]="form.get('password')?.invalid && form.get('password')?.touched" />
+        <span class="toggle-visibility" (click)="togglePassword()">
+          <i class="pi" [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"></i>
+        </span>
+      </div>
+      <div class="error" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+        Senha obrigatória.
+      </div>
+
+      <label for="confirmPassword">Confirmar senha</label>
+      <div class="password-wrapper">
+        <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" id="confirmPassword"
+          placeholder="Confirme sua senha" formControlName="confirmPassword"
+          [class.invalid]="form.get('confirmPassword')?.invalid && form.get('confirmPassword')?.touched" />
+        <span class="toggle-visibility" (click)="toggleConfirmPassword()">
+          <i class="pi" [ngClass]="isConfirmPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"></i>
+        </span>
+      </div>
+      <div class="error" *ngIf="form.errors?.['passwordMismatch'] && form.get('confirmPassword')?.touched">
+        As senhas não coincidem.
+      </div>
+
+      <button [ngClass]="isSubmittingForm ? 'create-button is-logging' : 'create-button'" type="submit"
+        [disabled]="form.invalid || isSubmittingForm">
+        <span *ngIf="!isSubmittingForm; else isLogging">Criar conta</span>
+        <ng-template #isLogging>
+          <span>
+            <i class="pi pi-spin pi-spinner"></i> Criando...
+          </span>
+        </ng-template>
+
+      </button>
+
+    </form>
+
+    <p class="register-link">Já tem uma conta? <a [routerLink]="'/login'">Faça login</a></p>
+  </div>
+</div>

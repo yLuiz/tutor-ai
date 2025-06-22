@@ -1,0 +1,43 @@
+<div class="form-dialog">
+  <p>Preencha as informações para {{ userData ? 'editar o usuário.' : 'criar um novo usuário.' }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      Nome Completo
+      <input formControlName="name" placeholder="Digite o nome completo" />
+    </label>
+
+    <label>
+      Email
+      <input formControlName="email" placeholder="Digite o email" />
+    </label>
+
+    <label>
+      Senha
+      <input autocomplete="new-password" formControlName="password" type="password" placeholder="Digite a senha" [required]="!userData" />
+    </label>
+
+    <label>
+      Função
+      <select formControlName="role">
+        <option value="common">Comum</option>
+        <option value="admin">Administrador</option>
+      </select>
+    </label>
+
+    <label>
+      Status
+      <select formControlName="isActive">
+        <option value="1">Ativo</option>
+        <option value="0">Inativo</option>
+      </select>
+    </label>
+
+    <div class="form-actions">
+      <button [disabled]="isSubmitting" type="submit">
+        {{ userData ? 'Salvar Alterações' : 'Criar Usuário' }}
+      </button>
+      <button [disabled]="isSubmitting" type="button" (click)="handleCancel()">Cancelar</button>
+    </div>
+  </form>
+</div>

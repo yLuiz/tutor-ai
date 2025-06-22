@@ -1,0 +1,43 @@
+/* layout principal em colunas */
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* menu lateral fixo na esquerda */
+.side-menu {
+  width: 250px;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb; /* Tailwind gray-200 */
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* conteúdo principal ao lado do menu */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* barra de ferramentas no topo do conteúdo */
+.toolbar {
+  height: 64px;
+  background-color: #f9fafb; /* Tailwind gray-50 */
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+}
+
+/* área de conteúdo abaixo da toolbar */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  /* padding: 1rem; */
+  background-color: #f9fafb;
+}

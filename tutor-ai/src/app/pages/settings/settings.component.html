@@ -1,0 +1,70 @@
+<p-toast [position]="'top-center'" />
+<section class="settings-section">
+    <div class="profile-tab">
+        <div class="profile-card">
+            <h2>Informações do Perfil</h2>
+            <p class="subtitle">Atualize suas informações pessoais</p>
+
+            <div class="avatar-section">
+                <img src="../../../../assets/avatar-default.svg" alt="Avatar" class="avatar" />
+                <div class="avatar-info">
+                    <!-- <button class="upload-btn">Alterar Foto</button>
+                    <small>JPG, PNG ou GIF. Máximo 2MB.</small> -->
+                </div>
+            </div>
+
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nome Completo</label>
+                        <input type="text" id="name" formControlName="name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" formControlName="email" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Biografia</label>
+                    <textarea id="bio" rows="4" formControlName="bio"></textarea>
+                </div>
+
+                <button type="submit" [disabled]="profileForm.invalid || isSubmitting">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="change-password-tab">
+
+        <div class="change-password-card">
+            <h2>Alterar Senha</h2>
+            <p class="subtitle">Mantenha sua conta segura com uma senha forte</p>
+
+            <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmitChangePassword()">
+                <div class="form-group">
+                    <label for="currentPassword">Senha Atual</label>
+                    <input autocomplete="new-password" type="password" id="currentPassword"
+                        formControlName="currentPassword" />
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">Nova Senha</label>
+                    <input autocomplete="new-password" type="password" id="newPassword" formControlName="newPassword" />
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Nova Senha</label>
+                    <input autocomplete="new-password" type="password" id="confirmPassword" formControlName="confirmPassword" />
+                    <div class="error"
+                        *ngIf="changePasswordForm.errors?.['notMatching'] && changePasswordForm.get('confirmPassword')?.touched">
+                        As senhas não coincidem.
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="changePasswordForm.invalid || isSubmitting">Alterar Senha</button>
+            </form>
+        </div>
+
+    </div>
+</section>

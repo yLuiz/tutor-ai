@@ -1,0 +1,72 @@
+<section class="chat">
+    <div class="chat-toolbar">
+        <div>
+            <h2>Tutor de Português</h2>
+            <p>Envie suas frases para correção e melhoria</p>
+        </div>
+    </div>
+
+    <div class="chat-container">
+        <div #scrollContainer class="messages">
+            <div *ngFor="let msg of messages;" class="message"
+                [ngClass]="{ 'user': msg.sender === 'user', 'bot': msg.sender === 'bot' }">
+
+                <ng-container *ngIf="msg.sender === 'bot'">
+                    <div class="bot-avatar-container">
+                        <img src="../../../assets/chat-bot.svg" alt="Bot" class="avatar avatar-left" />
+                    </div>
+                </ng-container>
+
+                <div class="message-card" [class.loading]="msg.loading">
+                    <ng-container *ngIf="msg.loading;">
+                        <div class="loading-container">
+                            <div class="dot-loader">
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                            <p class="loading-text">Analisando seu texto...</p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="!msg.loading && !msg.correction">
+                        {{ msg.originalText }}
+                    </ng-container>
+
+                    <ng-container *ngIf="!msg.loading && msg.correction && msg.explaination">
+                        <div>
+                            <p class="original-text">
+                                Texto original:
+                                <span>{{ msg.originalText }}</span>
+                            </p>
+                            <p class="correction-text">
+                                Sugestão de correção:
+                                <span>{{ msg.correction }}</span>
+                            </p>
+                            <p class="explanation-text">
+                                Explicação:
+                                <span>{{ msg.explaination }}</span>
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <ng-container *ngIf="msg.sender === 'user'">
+                    <div class="user-avatar-container">
+                        <img src="../../../assets/user.svg" alt="Usuário" class="avatar avatar-right" />
+                        <!-- 👤 -->
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" [(ngModel)]="inputMessage" placeholder="Digite sua mensagem..."
+                (keyup.enter)="sendMessage()" />
+            <button (click)="sendMessage()">
+                <i class="pi pi-send"></i>
+            </button>
+        </div>
+    </div>
+
+</section>

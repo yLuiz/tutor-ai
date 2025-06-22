@@ -1,0 +1,189 @@
+.settings-section {
+    padding: 2rem;
+    background: #f9fafb;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    font-family: 'Inter', sans-serif;
+
+}
+
+.profile-tab {
+    .profile-card {
+        width: 100vw;
+        max-width: 800px;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        margin: auto;
+    }
+
+    .subtitle {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .avatar-section {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        margin-right: 1rem;
+    }
+
+    .avatar-info small {
+        display: block;
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+
+    .upload-btn {
+        background: #f3f4f6;
+        border: 1px solid #d1d5db;
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    label {
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+        display: block;
+        color: #374151;
+    }
+
+    input,
+    textarea,
+    button {
+        font-family: BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        margin-top: 0.25rem;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    button[type="submit"] {
+        background: #111827;
+        color: white;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 8px;
+        margin-top: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #1f2937;
+    }
+
+    button[type="submit"]:disabled {
+        background-color: #b8b9b9;
+        cursor: not-allowed;
+    }
+
+}
+
+.change-password-tab {
+    .change-password-card {
+        width: 100vw;
+        max-width: 800px;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        margin: auto;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+        color: #6b7280;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+        color: #374151;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.95rem;
+    }
+
+    button {
+        background: #111827;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+        background-color: #1f2937;
+    }
+
+    button[type="submit"]:disabled {
+        background-color: #b8b9b9;
+        cursor: not-allowed;
+    }
+
+    .error {
+        color: #dc2626;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+}

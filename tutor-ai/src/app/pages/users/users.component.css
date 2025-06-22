@@ -1,0 +1,193 @@
+.list-header {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .action-buttons {
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .create-button {
+
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+
+      background-color: #0c4da3;
+      color: #FFF;
+
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #6689fc;
+      }
+    }
+  }
+}
+
+.user-form-dialog {
+  .p-dialog-header {
+    padding-left: 3rem;
+    padding-bottom: 0;
+  }
+}
+
+.user-list-wrapper {
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.search-container {
+  margin-bottom: 1rem;
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+}
+
+.list-header {
+  margin-bottom: 1rem;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.85rem;
+  }
+}
+
+.user-card {
+  background-color: #f9fafb;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .user-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      object-fit: cover;
+      background-color: #e5e7eb;
+    }
+
+    h4 {
+      font-weight: 600;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .last-access {
+      color: #6b7280;
+      font-size: 0.8rem;
+      margin-top: 0.2rem;
+    }
+  }
+
+  .user-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .role.admin {
+    background-color: #fae6bb;
+    color: #a0720e;
+  }
+
+  .role.common {
+    background-color: #c7e8fe;
+    color: #0471ca;
+  }
+
+  .tag {
+    padding: 0.3rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+
+    &.admin {
+      background-color: #fae6bb;
+      color: #a0720e;
+      border: 1px solid #fcd34d;
+    }
+
+    &.common {
+      background-color: #f3f4f6;
+      color: #4b5563;
+      border: 1px solid #d1d5db;
+    }
+
+    &.purple {
+      background-color: #f5f3ff;
+      color: #7c3aed;
+    }
+
+    &.gray {
+      background-color: #f3f4f6;
+      color: #4b5563;
+    }
+
+    &.green {
+      border: 1px solid #48b46e;
+      background-color: #dcfce7;
+      color: #146832;
+    }
+
+    &.red {
+      border: 1px solid #db9494;
+      background-color: #fee2e2;
+      color: #680202;
+    }
+  }
+
+  .icon-button {
+
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+
+    i {
+      font-style: normal;
+    }
+
+    &.edit {
+      color: #2e62a7;
+    }
+
+    &.delete {
+      color: #b91c1c;
+    }
+  }
+}

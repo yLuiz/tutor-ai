@@ -1,0 +1,62 @@
+<div class="side-menu">
+    <div class="header-menu">
+        <h2 class="brand-title">
+            <img src="../../../assets/book-open.svg" alt="Logo" class="brand-icon" />
+            Tutor de Português
+        </h2>
+        <p class="brand-subtitle">Correção inteligente</p>
+    </div>
+
+    <div class="user-info-menu">
+        <div class="user-info">
+            <div class="avatar-container">
+                <img class="avatar" src="../../../assets/avatar-default.svg" alt="User Avatar" />
+            </div>
+            <h3 class="username">{{userLogged?.name}}</h3>
+            <small class="email">{{userLogged?.email}}</small>
+            <p class="role" [ngClass]="{
+                'admin': userLogged?.role === 'admin',
+                'common': userLogged?.role === 'common'
+            }">
+                {{!!userLogged?.role ? userRoleLabels[userLogged!.role] : 'Sem identificador'}}
+            </p>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="nav-menu">
+            <nav>
+                <ul>
+                    <ng-container *ngFor="let item of links">
+                        <li *ngIf="userLogged && canAccess[userLogged.role].includes(item.route)">
+                            <a [routerLink]="item.route" routerLinkActive="active">
+                                <i class="{{item.icon}}"></i>
+                                <div>
+                                    <p class="nav-title">{{item.label}}</p>
+                                    <p class="nav-desc">{{item.description}}</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ng-container>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="footer-menu">
+            <div class="logout-container">
+                <button class="logout-button" (click)="confirmLogout($event)">
+                    <span class="logout-icon">
+                        <i class="pi pi-sign-out"></i>
+                    </span> Sair
+                </button>
+            </div>
+            <div class="footer-text">
+                <p>&copy; {{currentYear}} Tutor de Portugu&ecirc;s</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card flex justify-content-center gap-2">
+    <p-toast [position]="'top-center'" />
+    <p-confirmDialog />
+</div>

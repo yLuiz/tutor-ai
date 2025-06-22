@@ -1,0 +1,81 @@
+<div class="user-list-wrapper">
+    <div class="search-container">
+        <input type="text" placeholder="Buscar usuários por nome ou email..." />
+    </div>
+
+    <div class="list-header">
+        <div>
+            <h2>Lista de Usuários</h2>
+            <p>{{ users().length }} usuári{{ users().length === 1 ? 'o' : 'os' }} encontrado(s)</p>
+        </div>
+        <div class="action-buttons">
+            <button (click)="openCreateModal()" class="create-button">
+                <i class="pi pi-plus"></i>
+                Criar Usuário
+            </button>
+        </div>
+    </div>
+
+    <div class="user-card" *ngFor="let user of users()">
+        <div class="user-info">
+            <img src="assets/avatar-default.svg" class="avatar" />
+            <div>
+                <h4>
+                    {{ user.name }}
+                    <span *ngIf="user.role === 'admin'">
+                        <i class="pi pi-crown"></i>
+                    </span>
+
+                    <span *ngIf="user.role === 'common'">
+                        <i class="pi pi-shield"></i>
+                    </span>
+                </h4>
+                <p>{{ user.email }}</p>
+                <p class="last-access">
+                    Último acesso: {{ user.lastAccess }} &nbsp;
+                    {{ user.correctedTexts }} textos corrigidos
+                </p>
+            </div>
+        </div>
+
+        <div class="user-actions">
+            <span [ngClass]="user.role === 'admin' ? 'tag admin' : 'tag common'">
+                {{ user.role === 'admin' ? 'Administrador' : 'Comum' }}
+            </span>
+
+            <span [ngClass]="user.isActive === 1 ? 'tag green' : 'tag red'">
+                {{ user.isActive === 1 ? 'Ativo' : 'Inativo' }}
+            </span>
+
+            <button (click)="openEditModal(user)" class="icon-button edit" title="Editar">
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button (click)="confirmDelete(user.id, $event)" label="Delete" severity="danger" class="icon-button delete"
+                title="Excluir">
+                <i class="pi pi-trash"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="user-form-dialog">
+    <p-dialog (onHide)="closeCreateModal()" [draggable]="false" header="Criar usuário." [modal]="true"
+        [(visible)]="createFormVisible" [style]="{ width: '25rem' }">
+        <app-user-form #createUserForm [isSubmitting]="isSubmittingForm" (onSave)="handleCreateUser($event)"
+            (onCancel)="closeCreateModal()"></app-user-form>
+    </p-dialog>
+</div>
+
+<div class="user-form-dialog">
+    <p-dialog (onHide)="closeEditModal()" [draggable]="false" header="Editar usuário." [modal]="true"
+        [(visible)]="editFormVisible" [style]="{ width: '25rem' }">
+        <app-user-form [isSubmitting]="isSubmittingForm" *ngIf="editUser" (onSave)="handleEditUser($event)"
+            (onCancel)="closeEditModal()" [userData]="editUser"></app-user-form>
+    </p-dialog>
+</div>
+
+
+<div class="card flex justify-content-center gap-2">
+    <p-toast [position]="'top-center'" />
+    <p-confirmDialog />
+</div>
