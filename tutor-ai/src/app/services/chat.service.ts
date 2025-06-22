@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http"
 import type { Observable } from "rxjs"
 import type { IChatResponse } from "../shared/models/chat.model"
 import { AuthService } from "./auth.service";
+import { environment } from "../../env/env.local";
 
 @Injectable({
     providedIn: "root",
@@ -14,7 +15,7 @@ export class ChatService {
         private _authService: AuthService
     ) { }
 
-    url = 'http://localhost:3000/api';
+    url = environment.apiUrl;
     sufix = '/correct';
 
     sendMessage(text: string): Observable<IChatResponse> {

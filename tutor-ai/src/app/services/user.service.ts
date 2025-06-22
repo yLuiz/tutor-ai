@@ -4,6 +4,7 @@ import { IUserForm, IUserProfile, IUserResponse } from "../shared/models/user.mo
 import { UserRoles } from "../shared/enums/UserRoles";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from "./auth.service";
+import { environment } from "../../env/env.local";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class UserService {
         private _authService: AuthService
     ) { }
 
-    url = 'http://localhost:3000/api';
+    url = environment.apiUrl;
     sufix = '/users';
 
     private _getHeader() {

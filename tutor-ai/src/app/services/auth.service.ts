@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { BehaviorSubject, Observable } from "rxjs";
 import { UserRoles } from "../shared/enums/UserRoles";
 import { UserHelper } from "../shared/helpers/user.helper";
+import { environment } from "../../env/env.local";
 
 interface DecodedToken {
     exp: number; // tempo de expiração (em segundos desde Epoch)
@@ -28,7 +29,7 @@ export class AuthService {
         private _router: Router
     ) { }
 
-    url = 'http://localhost:3000/api';
+    url = environment.apiUrl;
     sufix = '/login';
 
     getDecodedToken(): DecodedToken | null {
