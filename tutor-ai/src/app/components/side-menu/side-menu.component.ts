@@ -63,21 +63,21 @@ export class SideMenuComponent {
       icon: 'pi pi-comment',
       emoji: '💬',
       route: '/chat',
-      description: 'Chat para corrigir frases.'
+      description: 'Correção de textos'
     },
     {
       label: 'Usários',
       icon: 'pi pi-users',
       emoji: '👥',
       route: '/users',
-      description: 'Listagem e cadastro de usuários.'
+      description: 'Gerenciar usuários'
     },
     {
       label: 'Configurações',
       icon: 'pi pi-cog',
       emoji: '⚙️',
       route: '/settings',
-      description: 'Configurações pessoais.'
+      description: 'Perfil e segurança'
     }
   ];
 
