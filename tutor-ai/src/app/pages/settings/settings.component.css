@@ -7,14 +7,20 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
     gap: 2rem;
     font-family: 'Inter', sans-serif;
 
 }
 
 .profile-tab {
+
+    width: 100%;
+
     .profile-card {
-        width: 100vw;
+        display: flex;
+        flex-direction: column;
+
         max-width: 800px;
         background: white;
         padding: 2rem;
@@ -119,8 +125,11 @@
 }
 
 .change-password-tab {
+
+    width: 100%;
+    margin-bottom: 130px;
+
     .change-password-card {
-        width: 100vw;
         max-width: 800px;
         background: white;
         padding: 2rem;
@@ -186,4 +195,60 @@
         margin-top: 0.25rem;
     }
 
+}
+
+@media (max-width: 768px) {
+    .settings-section {
+        padding: 1rem;
+    }
+
+    .profile-tab,
+    .change-password-tab {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .profile-card,
+    .change-password-card {
+        padding: 1.5rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+    
+}
+
+@media (max-width: 500px) {
+    .settings-section {
+        padding: 0rem;
+    }
+
+    .profile-tab,
+    .change-password-tab {
+        width: 100%;
+        padding: 0rem;
+    }
+
+    .profile-card,
+    .change-password-card {
+        padding: 0rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+    
 }

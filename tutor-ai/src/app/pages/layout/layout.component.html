@@ -1,11 +1,26 @@
 <section class="layout">
-  <aside class="side-menu">
-    <app-side-menu></app-side-menu>
-  </aside>
 
-  <main class="main-content">
-    <section class="content">
-      <router-outlet></router-outlet>
-    </section>
-  </main>
+  <div class="mobile-toolbar">
+    <button class="menu-toggle" (click)="toggleMenu()" #menuButtonRef>
+      <ng-container *ngIf="!menuVisible && isMobile">
+        <i class="pi pi-bars"></i>
+      </ng-container>
+      <ng-container *ngIf="menuVisible && isMobile">
+        <i class="pi pi-times"></i>
+      </ng-container>
+    </button>
+  </div>
+
+
+  <div class="layout-container">
+    <aside class="side-menu" [class.hidden]="!menuVisible">
+      <app-side-menu></app-side-menu>
+    </aside>
+
+    <main class="main-content">
+      <section class="content">
+        <router-outlet></router-outlet>
+      </section>
+    </main>
+  </div>
 </section>
