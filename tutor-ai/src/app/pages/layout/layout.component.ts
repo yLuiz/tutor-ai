@@ -21,9 +21,10 @@ export class LayoutComponent implements OnInit {
   mobileBreakpoint = 768;
   isMobile = false;
 
-  @ViewChild('sideMenuRef') sideMenuRef!: ElementRef;
+  @ViewChild('menuRef') menuRef!: ElementRef;
 
-  toggleMenu() {
+  toggleMenu(event: MouseEvent) {
+    event.stopPropagation();
     this.menuVisible = !this.menuVisible;
   }
 
@@ -42,6 +43,17 @@ export class LayoutComponent implements OnInit {
   updateMenuVisibility() {
     this.isMobile = window.innerWidth <= this.mobileBreakpoint;
     this.menuVisible = !this.isMobile;
+  }
+
+  // Captura qualquer clique no documento
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    const clickedInside = this.menuRef?.nativeElement.contains(event.target);
+    const isToggleButton = (event.target as HTMLElement)?.closest('.menu-toggle');
+
+    if (!clickedInside && !isToggleButton) {
+      this.menuVisible = false;
+    }
   }
 
 

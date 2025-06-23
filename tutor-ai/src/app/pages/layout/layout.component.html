@@ -1,7 +1,7 @@
 <section class="layout">
 
   <div class="mobile-toolbar">
-    <button class="menu-toggle" (click)="toggleMenu()" #menuButtonRef>
+    <button class="menu-toggle" (click)="toggleMenu($event)" #menuButtonRef>
       <ng-container *ngIf="!menuVisible && isMobile">
         <i class="pi pi-bars"></i>
       </ng-container>
@@ -13,7 +13,7 @@
 
 
   <div class="layout-container">
-    <aside class="side-menu" [class.hidden]="!menuVisible">
+    <aside class="side-menu" [class.hidden]="!menuVisible" #menuRef>
       <app-side-menu></app-side-menu>
     </aside>
 

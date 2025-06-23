@@ -85,8 +85,17 @@
   .mobile-toolbar {
     display: flex;
     width: 100vw;
-    height: 54px;
+    height: 34px;
     background-color: transparent;
+  }
+
+  /* layout principal em colunas */
+  .layout {
+    height: calc(100vh + 74px);
+  }
+
+  .layout-container {
+    height: calc(100vh + 74px);
   }
 
   .side-menu {
