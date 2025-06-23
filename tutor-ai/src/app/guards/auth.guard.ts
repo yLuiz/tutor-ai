@@ -36,9 +36,17 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
     return true;
   }
 
-  authService.logout({
-    hasTokenExpired: true
-  });
+  // Verificação adicional para saber se o token está expirado ou o usuário está tentando acessar uma rota protegida sem estar autenticado.
+  // Evitando assim o Toast de "Token expirado" quando não for o caso.
+  const storageToken = localStorage.getItem('token');
+  if (storageToken) {
+    authService.logout({
+      hasTokenExpired: true
+    });
+    return false;
+  }
+
+  authService.logout();
   return false;
 };
 
