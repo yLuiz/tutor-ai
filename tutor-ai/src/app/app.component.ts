@@ -21,7 +21,7 @@ import { RouterModule } from "@angular/router"
     `
     :host {
       display: block;
-      height: 100vh;
+      height: 100dvh;
     }
   `,
   ],

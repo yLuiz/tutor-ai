@@ -6,7 +6,7 @@ body {
 }
 
 body {
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     /* color: #1e5492; */
 }

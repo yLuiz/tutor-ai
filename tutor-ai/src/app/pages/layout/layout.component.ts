@@ -24,6 +24,9 @@ export class LayoutComponent implements OnInit {
   @ViewChild('menuRef') menuRef!: ElementRef;
 
   toggleMenu(event: MouseEvent) {
+
+    if (!this.isMobile) return;
+
     event.stopPropagation();
     this.menuVisible = !this.menuVisible;
   }
@@ -51,7 +54,7 @@ export class LayoutComponent implements OnInit {
     const clickedInside = this.menuRef?.nativeElement.contains(event.target);
     const isToggleButton = (event.target as HTMLElement)?.closest('.menu-toggle');
 
-    if (!clickedInside && !isToggleButton) {
+    if (!clickedInside && !isToggleButton && this.isMobile) {
       this.menuVisible = false;
     }
   }
