@@ -86,7 +86,7 @@
     display: flex;
     width: 100vw;
     height: 34px;
-    background-color: transparent;
+    background-color: #f9fafb;
   }
 
   /* layout principal em colunas */
