@@ -14,7 +14,7 @@
 
   <div class="layout-container">
     <aside class="side-menu" [class.hidden]="!menuVisible" #menuRef>
-      <app-side-menu></app-side-menu>
+      <app-side-menu (onToggle)="toggleMenu($event)"></app-side-menu>
     </aside>
 
     <main class="main-content">

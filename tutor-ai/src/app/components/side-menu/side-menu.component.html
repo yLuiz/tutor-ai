@@ -28,7 +28,7 @@
             <nav>
                 <ul>
                     <ng-container *ngFor="let item of links">
-                        <li *ngIf="userLogged && canAccess[userLogged.role].includes(item.route)">
+                        <li (click)="onToggle.emit($event)" *ngIf="userLogged && canAccess[userLogged.role].includes(item.route)">
                             <a [routerLink]="item.route" routerLinkActive="active">
                                 <i class="{{item.icon}}"></i>
                                 <div>

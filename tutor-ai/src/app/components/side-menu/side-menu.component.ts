@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { IUserResponse } from '../../shared/models/user.model';
 import { UserHelper } from '../../shared/helpers/user.helper';
@@ -30,6 +30,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './side-menu.component.css'
 })
 export class SideMenuComponent {
+
+  @Output() onToggle: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   constructor(
     private _router: Router,
