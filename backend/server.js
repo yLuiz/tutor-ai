@@ -277,7 +277,7 @@ app.patch('/api/users/change-password/:id', async (req, res) => {
 
     const user = users[userIndex];
     if (user.password !== oldPassword) {
-      return res.status(401).json({ error: 'Senha antiga incorreta' });
+      return res.status(400).json({ error: 'Senha antiga incorreta' });
     }
 
     // Atualiza a senha do usuário
