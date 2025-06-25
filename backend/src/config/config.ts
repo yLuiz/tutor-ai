@@ -14,7 +14,7 @@ const CONFIG = {
     CORRECT_BY_AI: Number(process.env.CORRECT_BY_AI) === 1 ? true : false || false,
     JWT_SECRET: process.env.JWT_SECRET || '',
     JWT_EXPIRATION: process.env.JWT_EXPIRATION || '1h',
-    MONGO_URI: `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}?authSource=admin`,
+    MONGO_URI: `mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`,
 }
 
 export { CONFIG };
