@@ -59,7 +59,7 @@ export class UserFormComponent implements OnDestroy, OnInit {
         email: this.form.value.email ?? '',
         password: this.form.value.password ?? '',
         role: this.form.value.role ?? 'admin',
-        isActive: Number(this.form.value.isActive)
+        isActive: Boolean(Number(this.form.value.isActive))
       });
 
     } else {

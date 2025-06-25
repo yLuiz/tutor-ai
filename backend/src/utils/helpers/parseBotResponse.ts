@@ -1,4 +1,4 @@
-function parseBotResponse(raw) {
+export function parseBotResponse(raw) {
   const cleaned = raw
     .replace(/```json\s*/i, '')
     .replace(/```$/, '')       
@@ -6,5 +6,3 @@ function parseBotResponse(raw) {
 
   return JSON.parse(cleaned);
 }
-
-module.exports = { parseBotResponse };

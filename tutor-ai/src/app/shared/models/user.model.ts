@@ -5,7 +5,7 @@ export interface IUserResponse {
     name: string;
     email: string;
     role: UserRoles;
-    isActive: number;
+    isActive: boolean;
     lastAccess: string;
     bio?: string;
     correctedTexts: number;
@@ -23,7 +23,7 @@ export interface IUserForm {
     name: string;
     email: string;
     role?: string;
-    isActive?: number;
+    isActive?: boolean;
     password?: string;
     bio?: string;
 }

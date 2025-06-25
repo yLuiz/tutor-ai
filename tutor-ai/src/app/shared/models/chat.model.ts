@@ -1,6 +1,6 @@
 export interface IMessage {
   id: string
-  role: "user" | "assistant"
+  role: "user" | "bot"
   content: string
   timestamp: Date
 }

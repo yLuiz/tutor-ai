@@ -16,7 +16,7 @@ interface DecodedToken {
 export interface ILoginResponse {
     token: string;
     user: {
-        id: number, name: string, email: string, role: UserRoles, isActive: number
+        id: number, name: string, email: string, role: UserRoles, isActive: boolean
     };
 }
 
@@ -79,9 +79,9 @@ export class AuthService {
                             name: response.user.name,
                             email: response.user.email,
                             role: response.user.role,
-                            isActive: response.user.isActive, // Supondo que o status seja sempre 'active' no login
-                            lastAccess: new Date().toISOString(), // Definindo o último acesso como a data atual
-                            correctedTexts: 0 // Valor inicial padrão para correctedTexts
+                            isActive: response.user.isActive,
+                            lastAccess: new Date().toISOString(),
+                            correctedTexts: 0
                         })
 
                         observer.next(response);

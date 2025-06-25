@@ -29,11 +29,11 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="!msg.loading && !msg.correction">
+                    <ng-container *ngIf="!msg.loading && !msg.correction && !msg.naturalText">
                         {{ msg.originalText }}
                     </ng-container>
 
-                    <ng-container *ngIf="!msg.loading && msg.correction && msg.explaination">
+                    <ng-container *ngIf="(!msg.loading && msg.correction && msg.explaination) && !msg.naturalText">
                         <div>
                             <p class="original-text">
                                 Texto original:
@@ -49,6 +49,13 @@
                             </p>
                         </div>
                     </ng-container>
+
+                    <ng-container *ngIf="!msg.loading && msg.naturalText">
+                        <div>
+                            <span>{{ msg.naturalText }}</span>
+                        </div>
+                    </ng-container>
+
                 </div>
 
                 <ng-container *ngIf="msg.sender === 'user'">

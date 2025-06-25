@@ -46,8 +46,8 @@
                         {{ user.role === 'admin' ? 'Administrador' : 'Comum' }}
                     </span>
 
-                    <span [ngClass]="user.isActive === 1 ? 'tag green' : 'tag red'">
-                        {{ user.isActive === 1 ? 'Ativo' : 'Inativo' }}
+                    <span [ngClass]="user.isActive ? 'tag green' : 'tag red'">
+                        {{ user.isActive ? 'Ativo' : 'Inativo' }}
                     </span>
                 </div>
 
