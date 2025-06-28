@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { ConversationService } from './conversation.service';
+import { authenticateToken } from '../../middlewares/auth';
 
 const router = Router();
 const conversationService = new ConversationService();
 
-router.post('/conversations', async (req, res) => {
+router.post('/conversations', authenticateToken as any, async (req: any, res: any) => {
   const { userId, messages, title } = req.body;
 
   try {
@@ -16,7 +17,7 @@ router.post('/conversations', async (req, res) => {
   }
 });
 
-router.get('/conversations/user/:userId', async (req, res) => {
+router.get('/conversations/user/:userId', authenticateToken as any, async (req: any, res: any) => {
   const { userId } = req.params;
   const page = parseInt(req.query.page as string) || 0;
   const limit = parseInt(req.query.limit as string) || 10;
@@ -30,7 +31,7 @@ router.get('/conversations/user/:userId', async (req, res) => {
   }
 });
 
-router.get('/conversations/:id', async (req: any, res: any) => {
+router.get('/conversations/:id', authenticateToken as any, async (req: any, res: any) => {
   const { id } = req.params;
 
   try {
@@ -45,7 +46,7 @@ router.get('/conversations/:id', async (req: any, res: any) => {
   }
 });
 
-router.post('/conversations/:id/messages', async (req: any, res: any) => {
+router.post('/conversations/:id/messages', authenticateToken as any, async (req: any, res: any) => {
   const { id } = req.params;
   const { messages } = req.body;
 
@@ -60,7 +61,7 @@ router.post('/conversations/:id/messages', async (req: any, res: any) => {
   }
 });
 
-router.post('/conversations/share/:id', async (req: any, res: any) => {
+router.post('/conversations/share/:id', authenticateToken as any, async (req: any, res: any) => {
   const { id } = req.params;
 
   try {
@@ -88,7 +89,7 @@ router.get('/conversations/shared/:sharedId', async (req: any, res: any) => {
   }
 });
 
-router.patch('/conversations/:id', async (req: any, res: any) => {
+router.patch('/conversations/:id', authenticateToken as any, async (req: any, res: any) => {
   const { id } = req.params;
   const { title } = req.body;
 
@@ -106,7 +107,7 @@ router.patch('/conversations/:id', async (req: any, res: any) => {
   }
 })
 
-router.delete('/conversations/:id', async (req: any, res: any) => {
+router.delete('/conversations/:id', authenticateToken as any, async (req: any, res: any) => {
   const { id } = req.params;
 
   try {

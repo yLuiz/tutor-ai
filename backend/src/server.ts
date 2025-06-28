@@ -19,9 +19,9 @@ async function main() {
         app.use(express.json());
 
         app.use('/api', AuthRouter);
+        app.use('/api', ConversationRouter);
         app.use('/api', authenticateToken as any, AiRouter);
         app.use('/api', authenticateToken as any, UserRouter);
-        app.use('/api', authenticateToken as any, ConversationRouter);
 
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
