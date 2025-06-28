@@ -40,6 +40,18 @@ export class ConversationService {
         );
     }
 
+    updateConversationTitle(conversationId: string, newTitle: string): Observable<IConversation> {
+        return this.http.patch<IConversation>(
+            `${this.url}${this.sufix}/${conversationId}`,
+            { title: newTitle },
+            {
+                headers: {
+                    'Authorization': `Bearer ${this._authService.getValidToken()}`,
+                }
+            }
+        );
+    }
+
     deleteConversation(conversationId: string): Observable<void> {
         return this.http.delete<void>(`${this.url}${this.sufix}/${conversationId}`,
             {

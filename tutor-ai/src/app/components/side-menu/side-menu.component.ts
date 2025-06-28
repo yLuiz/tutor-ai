@@ -14,6 +14,7 @@ import { AuthService } from '../../services/auth.service';
 import { ConversationService } from '../../services/conversation.service';
 import { IConversation } from '../../shared/models/conversation.model';
 import { SideMenuService } from './side-menu.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-side-menu',
@@ -24,6 +25,7 @@ import { SideMenuService } from './side-menu.service';
     ButtonModule,
     InputTextModule,
     ConfirmDialogModule,
+    FormsModule,
     ToastModule
   ],
   providers: [
@@ -48,8 +50,10 @@ export class SideMenuComponent implements OnInit {
 
   userRoleLabels = UserRoleLabel;
   userLogged: IUserResponse | null = UserHelper.getUserInfo();
-
   currentYear = new Date().getFullYear();
+
+  editingConversationId: string | null = null;
+  editedTitle: string = '';
 
   conversationsSection = {
     conversations: [] as IConversation[],
@@ -213,6 +217,43 @@ export class SideMenuComponent implements OnInit {
             console.error('Erro ao excluir conversa:', err);
           }
         });
+      }
+    });
+  }
+
+  startEditing(conversationId: string, currentTitle: string) {
+    this.editingConversationId = conversationId;
+    this.editedTitle = currentTitle || '';
+  }
+
+  saveEditedTitle(conversation: IConversation) {
+    const newTitle = this.editedTitle.trim();
+
+    if (!newTitle || newTitle === conversation.title) {
+      this.editingConversationId = null;
+      return;
+    }
+
+    this._conversationService.updateConversationTitle(conversation.id, newTitle).subscribe({
+      next: () => {
+        conversation.title = newTitle;
+        this._messageService.add({
+          severity: 'success',
+          summary: 'Título atualizado!',
+          detail: 'O nome da conversa foi alterado.',
+          life: 2500
+        });
+      },
+      error: () => {
+        this._messageService.add({
+          severity: 'error',
+          summary: 'Erro ao atualizar',
+          detail: 'Não foi possível atualizar o título.',
+          life: 3000
+        });
+      },
+      complete: () => {
+        this.editingConversationId = null;
       }
     });
   }

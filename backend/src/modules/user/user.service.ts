@@ -10,7 +10,7 @@ export class UserService {
     if (existing) {
       throw new Error('Usuário já existe');
     }
-
+    
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     return await this.userRepository.create({
@@ -25,6 +25,16 @@ export class UserService {
   async getUsers(email?: string) {
     if (email) return this.userRepository.findByEmail(email);
     return this.userRepository.findAll();
+  }
+
+  async searchUsers(filters: { email?: string; name?: string }) {
+    const { email, name } = filters;
+
+    const query: any = {};
+    if (email) query.email = { $regex: email, $options: 'i' };
+    if (name) query.name = { $regex: name, $options: 'i' };
+
+    return this.userRepository.search(query);
   }
 
   async getUserById(id: string) {

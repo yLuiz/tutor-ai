@@ -32,6 +32,16 @@ export class ConversationRepository {
     })) as (IConversation & { id: string })[];
   }
 
+  async update(id: string, data: Partial<IConversation>): Promise<IConversation | null> {
+    const updatedConversation = await ConversationModel.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { new: true }
+    ).lean();
+
+    return updatedConversation;
+  }
+
   async create(data: {
     userId: string;
     messages: IConversation['messages'];

@@ -18,7 +18,7 @@ import { SideMenuComponent } from '../../components/side-menu/side-menu.componen
 export class LayoutComponent implements OnInit {
 
   menuVisible = true;
-  mobileBreakpoint = 768;
+  mobileBreakpoint = 818;
   isMobile = false;
 
   @ViewChild('menuRef') menuRef!: ElementRef;

@@ -2,6 +2,18 @@
 import { User, UserModel } from '../entities/UserEntity';
 
 export class UserRepository {
+
+    async search(query: Record<string, any>): Promise<(User & { id: string })[]> {
+        const users = await UserModel.find(query, { password: 0 }).lean();
+
+        if (!users || users.length === 0) return [] as (User & { id: string })[];
+
+        return users.map(user => ({
+            ...user,
+            id: user._id.toString(),
+        }));
+    }
+
     async findAll(): Promise<(User & { id: string })[]> {
         const users = await UserModel.find({}, { password: 0 }).lean();
 

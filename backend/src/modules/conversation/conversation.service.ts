@@ -40,6 +40,10 @@ export class ConversationService {
     return await this.conversationRepository.findBySharedId(sharedId);
   }
 
+  async updateConversation(id: string, data: Partial<{ title: string; messages: any[] }>) {
+    return await this.conversationRepository.update(id, data);
+  }
+
   async deleteConversation(id: string) {
     return await this.conversationRepository.delete(id);
   }

@@ -17,7 +17,7 @@
 
 /* menu lateral fixo na esquerda */
 .side-menu {
-  width: 250px;
+  width: 300px;
   background-color: #ffffff;
   border-right: 1px solid #e5e7eb;
   /* Tailwind gray-200 */
@@ -80,7 +80,7 @@
 }
 
 /* Responsivo */
-@media (max-width: 768px) {
+@media (max-width: 818px) {
 
   .mobile-toolbar {
     display: flex;

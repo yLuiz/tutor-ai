@@ -88,6 +88,24 @@ router.get('/conversations/shared/:sharedId', async (req: any, res: any) => {
   }
 });
 
+router.patch('/conversations/:id', async (req: any, res: any) => {
+  const { id } = req.params;
+  const { title } = req.body;
+
+  try {
+
+    const conversation = await conversationService.getConversationById(id);
+    if (!conversation) return res.status(404).json({ error: 'Conversa não encontrada' });
+    
+    const updated = await conversationService.updateConversation(id, { title });
+
+    res.json(updated);
+  } catch (error) {
+    console.error('Erro ao atualizar título da conversa:', error);
+    res.status(500).json({ error: 'Erro ao atualizar título da conversa' });
+  }
+})
+
 router.delete('/conversations/:id', async (req: any, res: any) => {
   const { id } = req.params;
 

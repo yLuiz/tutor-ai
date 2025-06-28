@@ -30,15 +30,26 @@ export class UserService {
         })
     }
 
-    getUserByEmail(email: string): Observable<IUserResponse | undefined> {
-        return this._http.get<IUserResponse>(`${this.url}${this.sufix}/?email=${email}`, {
+    getUserByEmail(email: string): Observable<IUserResponse[] | undefined> {
+        return this._http.get<IUserResponse[]>(`${this.url}${this.sufix}/?email=${email}`, {
             headers: this._getHeader()
         });
     }
 
-    getUsers(): Observable<IUserResponse[]> {
+    getUsers(filters?: { email?: string; name?: string }): Observable<IUserResponse[]> {
+        const params: Record<string, string> = {};
+
+        if (filters?.email) {
+            params['email'] = filters.email;
+        }
+
+        if (filters?.name) {
+            params['name'] = filters.name;
+        }
+
         return this._http.get<IUserResponse[]>(`${this.url}${this.sufix}`, {
-            headers: this._getHeader()
+            headers: this._getHeader(),
+            params,
         });
     }
 

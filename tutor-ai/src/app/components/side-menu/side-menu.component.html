@@ -65,9 +65,21 @@
             }" *ngFor="let conversation of conversationsSection.conversations" class="conversation-item"
                 (click)="navigateToConversation(conversation.id)">
                 <div>
-                    <p class="conversation-title" [title]="conversation.title">{{ conversation.title || 'Sem título'
-                        }}
-                    </p>
+                    <ng-container *ngIf="editingConversationId !== conversation.id; else editMode">
+                        <p class="conversation-title" [title]="conversation.title">{{ conversation.title || 'Sem título'
+                            }}</p>
+                        <button class="edit-button"
+                            (click)="startEditing(conversation.id, conversation.title!); $event.stopPropagation()"
+                            title="Editar título">
+                            <i class="pi pi-pencil"></i>
+                        </button>
+                    </ng-container>
+
+                    <ng-template #editMode>
+                        <input [(ngModel)]="editedTitle" (blur)="saveEditedTitle(conversation)"
+                            (keyup.enter)="saveEditedTitle(conversation)" class="edit-title-input" autofocus />
+                    </ng-template>
+
                     <small class="conversation-date">{{ conversation.createdAt | date:'short' }}</small>
                 </div>
 

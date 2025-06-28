@@ -18,7 +18,12 @@ router.post('/users', async (req, res) => {
 
 router.get('/users', async (req, res) => {
     try {
-        const users = await userService.getUsers(req.query.email as string);
+
+        const filters: { email?: string; name?: string } = {};
+        if (req.query.email) filters.email = req.query.email as string;
+        if (req.query.name) filters.name = req.query.name as string;
+
+        const users = await userService.searchUsers(filters);
         res.json(users);
     } catch (error) {
         res.status(500).json({ error: "Erro ao buscar usuários" });

@@ -1,6 +1,7 @@
 <div class="user-list-wrapper">
     <div class="search-container">
-        <input type="text" placeholder="Buscar usuários por nome ou email..." />
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearchUsers()"
+            placeholder="Buscar usuários por nome ou email..." />
     </div>
 
     <div class="list-header">

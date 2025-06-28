@@ -12,6 +12,7 @@ import { UserFormComponent } from '../../components/forms/user-form/user-form.co
 import { UserHelper } from '../../shared/helpers/user.helper';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -22,6 +23,7 @@ import { Router } from '@angular/router';
     ButtonModule,
     InputTextModule,
     ConfirmDialogModule,
+    FormsModule,
     ToastModule,
     UserFormComponent
   ],
@@ -38,6 +40,7 @@ export class UsersComponent implements OnInit {
 
   createFormVisible = false;
 
+  searchTerm = '';
   editFormVisible = false;
   editUser?: IUserForm;
   isSubmittingForm = false;
@@ -81,13 +84,29 @@ export class UsersComponent implements OnInit {
     this.createFormVisible = false;
   }
 
+  onSearchUsers() {
+    const term = this.searchTerm.trim();
+    if (!term) {
+      this._loadUsers(); // carrega todos
+      return;
+    }
+
+    this._userService.getUsers({ name: term, email: term }).subscribe({
+      next: (filteredUsers) => {
+        this.users.set(filteredUsers);
+      },
+      error: (err) => {
+        console.error('Erro ao buscar usuários:', err);
+      }
+    });
+  }
 
   // Métodos para o modal de edição de usuário
   openEditModal(user: IUserForm): void {
     this.editUser = user;
     this.editFormVisible = true;
 
-    this._userService.getUserByEmail(user.email).subscribe({
+    this._userService.getUserById(user.id!).subscribe({
       next: (userData) => {
         if (userData) {
         } else {
