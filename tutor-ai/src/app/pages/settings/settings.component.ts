@@ -57,8 +57,6 @@ export class SettingsComponent implements OnInit {
 
       this.isSubmitting = true;
 
-      console.log('Dados salvos:', this.profileForm.value);
-
       const userId = UserHelper.getUserInfo()?.id!;
       const profile: IUserProfile = {
         id: userId,

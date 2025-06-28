@@ -25,9 +25,6 @@ export class LoginComponent {
 
   ngOnInit() {
     this._route.queryParams.subscribe(params => {
-
-      console.log('LoginComponent - queryParams:', params);
-
       const reason = params['reason'];
       if (reason && reason === 'expired') {
 

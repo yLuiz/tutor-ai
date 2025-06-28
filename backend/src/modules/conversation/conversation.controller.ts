@@ -10,13 +10,21 @@ router.post('/conversations', async (req: any, res: any) => {
     const { userId, messages, title } = req.body;
 
     try {
+
+        console.log('Criando nova conversa:', { userId, messages, title });
+
         const conversation = await conversationRepository.create({
             userId,
             messages,
             title
         });
 
-        res.status(201).json(conversation);
+        const output = {
+            ...conversation,
+            id: conversation._id,
+        }
+
+        res.status(201).json(output);
     } catch (error) {
         console.error('Erro ao criar conversa:', error);
         res.status(500).json({ error: 'Erro ao criar conversa' });
@@ -27,12 +35,16 @@ router.post('/conversations', async (req: any, res: any) => {
 router.get('/conversations/user/:userId', async (req: any, res: any) => {
     const { userId } = req.params;
 
-    console.log(`Buscando conversas para o usuário: ${userId}`);
-    
+    const page = parseInt(req.query.page as string) || 0;
+    const limit = parseInt(req.query.limit as string) || 10;
 
-    
     try {
-        const conversations = await conversationRepository.findByUserId(userId);
+        const conversations = await conversationRepository.findByUserId({
+            userId,
+            take: limit,
+            skip: page * limit
+        });
+
         res.status(200).json(conversations);
     } catch (error) {
         console.error('Erro ao buscar conversas do usuário:', error);

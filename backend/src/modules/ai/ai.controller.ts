@@ -11,10 +11,9 @@ const conversationRepository = new ConversationRepository();
 
 router.post('/ai/correct', async (req, res) => {
   const { text, conversationId } = req.body;
-  console.log(req.headers.authorization);
+  
   try {
     const correctedText = await correctText(text);
-    // const correctedText = await correctWithDeepSeek(text);
     const responseParsed = parseBotResponse(correctedText);
 
     await conversationRepository.appendMessages(conversationId, [

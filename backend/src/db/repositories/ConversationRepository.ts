@@ -11,8 +11,20 @@ export class ConversationRepository {
     } as IConversation & { id: string };
   }
 
-  async findByUserId(userId: string): Promise<(IConversation & { id: string })[]> {
-    const conversations = await ConversationModel.find({ user: userId }).sort({ createdAt: -1 }).lean();
+  async findByUserId(args: {
+    userId: string,
+    take: number,
+    skip: number
+  }): Promise<(IConversation & { id: string })[]> {
+
+    const { userId, take, skip } = args;
+
+    const conversations = await ConversationModel.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(take)
+      .lean();
+
 
     return conversations.map((conv) => ({
       ...conv,
@@ -45,18 +57,6 @@ export class ConversationRepository {
       { $push: { messages: { $each: timestampedMessages } } },
       { new: true }
     ).lean();
-
-    // Para debugging purposes, log the last message if it's from the bot
-    if (newMessages.at(-1)?.role === 'bot') {
-      const messages = updatedConversation?.messages.map(m => ({
-        role: m.role,
-        content: m.content,
-        timestamp: m.timestamp
-      })) || [];
-
-      console.log("updatedConversation:", messages);
-    }
-
 
     return updatedConversation;
   }

@@ -1,18 +1,20 @@
-import { CommonModule } from "@angular/common"
-import { HttpClientModule } from "@angular/common/http"
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core"
-import { FormsModule } from "@angular/forms"
+import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { SideMenuService } from "../../components/side-menu/side-menu.service";
 import { ChatService } from "../../services/chat.service";
 import { ConversationService } from "../../services/conversation.service";
 
 export interface IChatMessageBot {
   sender: 'user' | 'bot';
   originalText: string;
-  naturalText?: string; // Texto corrigido ou melhorado
+  naturalText?: string;
   loading?: boolean;
   explaination?: string;
   correction?: string;
-  timestamp?: Date; // Adiciona um timestamp opcional
+  timestamp?: Date;
 }
 
 @Component({
@@ -26,7 +28,10 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private _chatService: ChatService,
-    private _conversationService: ConversationService
+    private _conversationService: ConversationService,
+    private _sideMenuService: SideMenuService,
+    private _route: ActivatedRoute,
+    private _router: Router
   ) { }
 
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
@@ -34,7 +39,29 @@ export class ChatComponent implements OnInit {
   private _currentConversationId?: string;
 
   ngOnInit() {
-    this._getChatMessages();
+    this._route.queryParams.subscribe(params => {
+      const conversationId = params['conversationId'];
+      if (conversationId && conversationId !== 'new') {
+        this._currentConversationId = conversationId;
+        this._getChatMessages();
+        return;
+      }
+
+      if (conversationId && conversationId === 'new') {
+        this.startNewConversation();
+        return;
+      }
+
+      else {
+        this._currentConversationId = undefined;
+        this._getChatMessages();
+        this.messages = [
+          { ...this.defaultMessage },
+        ];
+        return;
+      }
+
+    });
   }
 
   scrollToBottom() {
@@ -45,8 +72,15 @@ export class ChatComponent implements OnInit {
     }, 100);
   }
 
+  defaultMessage: IChatMessageBot = {
+    sender: 'bot',
+    originalText: 'Olá! Sou seu tutor de português. Envie uma frase ou texto que você gostaria de corrigir ou melhorar, e eu te ajudarei!'
+  };
+
+
+
   messages: IChatMessageBot[] = [
-    { sender: 'bot', originalText: 'Olá! Sou seu tutor de português. Envie uma frase ou texto que você gostaria de corrigir ou melhorar, e eu te ajudarei!' }
+    { ...this.defaultMessage },
   ];
 
   inputMessage = '';
@@ -55,7 +89,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
 
-    if (this.isLoadingRequest) return; // Evita enviar múltiplas mensagens enquanto está carregando
+    if (this.isLoadingRequest) return;
     this.handleLoading();
 
     const trimmed = this.inputMessage.trim();
@@ -91,6 +125,12 @@ export class ChatComponent implements OnInit {
     this.scrollToBottom();
 
     const { loadingMsg, trimmed } = args;
+
+
+    if (!this._currentConversationId) {
+      this.startNewConversation(trimmed);
+      return;
+    }
 
     this._chatService.sendMessageV2({
       text: trimmed,
@@ -133,50 +173,75 @@ export class ChatComponent implements OnInit {
 
   }
 
-  private _sendMessageToServer(args: {
-    loadingMsg: { sender: 'bot'; originalText: string; loading: boolean },
-    trimmed: string
-  }) {
+  // private _sendMessageToServer(args: {
+  //   loadingMsg: { sender: 'bot'; originalText: string; loading: boolean },
+  //   trimmed: string
+  // }) {
 
-    this.scrollToBottom();
+  //   this.scrollToBottom();
 
-    const { loadingMsg, trimmed } = args;
+  //   const { loadingMsg, trimmed } = args;
 
-    this._chatService.sendMessage(trimmed).subscribe({
-      next: (response) => {
+  //   this._chatService.sendMessage(trimmed).subscribe({
+  //     next: (response) => {
 
-        const index = this.messages.indexOf(loadingMsg);
-        if (index !== -1) this.messages.splice(index, 1);
-
-
-        this.messages.push({
-          sender: 'bot',
-          originalText: trimmed,
-          explaination: response.explicacao,
-          correction: response.correcao
-        });
-
-        this.handleLoading();
-      },
-      error: (error) => {
-        console.error('Erro ao enviar mensagem:', error);
-
-        const index = this.messages.indexOf(loadingMsg);
-        if (index !== -1) this.messages.splice(index, 1);
+  //       const index = this.messages.indexOf(loadingMsg);
+  //       if (index !== -1) this.messages.splice(index, 1);
 
 
-        this.messages.push({
-          sender: 'bot',
-          originalText: 'Ocorreu um erro ao processar sua frase, o servidor pode está fora do ar. Tente novamente mais tarde.'
-        });
+  //       this.messages.push({
+  //         sender: 'bot',
+  //         originalText: trimmed,
+  //         explaination: response.explicacao,
+  //         correction: response.correcao
+  //       });
 
-        this.handleLoading();
-      }
-    })
-      .add(() => {
-        this.scrollToBottom();
+  //       this.handleLoading();
+  //     },
+  //     error: (error) => {
+  //       console.error('Erro ao enviar mensagem:', error);
+
+  //       const index = this.messages.indexOf(loadingMsg);
+  //       if (index !== -1) this.messages.splice(index, 1);
+
+
+  //       this.messages.push({
+  //         sender: 'bot',
+  //         originalText: 'Ocorreu um erro ao processar sua frase, o servidor pode está fora do ar. Tente novamente mais tarde.'
+  //       });
+
+  //       this.handleLoading();
+  //     }
+  //   })
+  //     .add(() => {
+  //       this.scrollToBottom();
+  //     });
+  // }
+
+  countConversation = 0;
+
+  startNewConversation(message?: string) {
+    this._conversationService.createConversation(`Conversa ${this.countConversation + 1}`)
+      .subscribe({
+        next: (conversation) => {
+          this._currentConversationId = conversation.id;
+
+          this.countConversation++;
+
+          this._sendMessageToServerNewVersion({
+            loadingMsg: { sender: 'bot', originalText: 'Iniciando nova conversa...', loading: true },
+            trimmed: message || ''
+          })
+
+          this._router.navigate(['/chat'], { queryParams: { conversationId: conversation.id } });
+
+          this._sideMenuService.updateConversations.next(true);
+          this.scrollToBottom();
+        },
+        error: (err) => {
+          console.error('Erro ao criar nova conversa:', err);
+        }
       });
-
   }
 
   handleLoading() {
@@ -184,35 +249,30 @@ export class ChatComponent implements OnInit {
   }
 
   private _getChatMessages() {
-    this._conversationService.getLastConversations().subscribe({
-      next: (conversations) => {
-        if (conversations.length > 0) {
-          const lastConversation = conversations.at(-1);
 
-          this._currentConversationId = lastConversation!.id;
+    if (!this._currentConversationId) return;
 
-          console.log("Última conversa carregada:", lastConversation);
+    this._conversationService.getConversationById(this._currentConversationId!).subscribe({
+      next: (conversation) => {
+        this._currentConversationId = conversation.id;
 
+        const lastMessages = conversation.messages.map(msg => ({
+          sender: msg.role,
+          originalText: msg.content,
+          naturalText: msg.content,
+          timestamp: msg.timestamp
+        }));
 
-          const lastMessages = lastConversation!.messages.map(msg => ({
-            sender: msg.role,
-            originalText: msg.content,
-            naturalText: msg.content,
-            timestamp: msg.timestamp
-          }));
-
-          this.messages = [
-            ...this.messages,
-            ...lastMessages,
-          ];
-        }
+        this.messages = [
+          { ...this.defaultMessage },
+          ...lastMessages,
+        ];
 
         this.scrollToBottom();
       },
       error: (error) => {
         console.error('Erro ao carregar mensagens:', error);
       }
-    });
+    })
   }
-
 }

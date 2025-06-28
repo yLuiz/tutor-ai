@@ -25,10 +25,27 @@
 
     <div class="menu-container">
         <div class="nav-menu">
+            <div class="conversation-actions">
+                <ul class="actions-list">
+                    <ng-container *ngFor="let item of conversationActions">
+                        <li class="action-item" (click)="item.action()"
+                            *ngIf="userLogged && canAccess.conversationActions[userLogged.role].includes(item.route)">
+                            <a>
+                                <i class="{{item.icon}}"></i>
+                                <div>
+                                    <p class="nav-title">{{item.label}}</p>
+                                    <p class="nav-desc">{{item.description}}</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
             <nav>
                 <ul>
                     <ng-container *ngFor="let item of links">
-                        <li (click)="onToggle.emit($event)" *ngIf="userLogged && canAccess[userLogged.role].includes(item.route)">
+                        <li (click)="onToggle.emit($event)"
+                            *ngIf="userLogged && canAccess.links[userLogged.role].includes(item.route)">
                             <a [routerLink]="item.route" routerLinkActive="active">
                                 <i class="{{item.icon}}"></i>
                                 <div>
@@ -41,6 +58,30 @@
                 </ul>
             </nav>
         </div>
+
+        <ul class="conversation-list" (scroll)="onScroll($event)">
+            <li [ngClass]="{
+                'active': conversation.id === selectedConversationId,
+            }" *ngFor="let conversation of conversationsSection.conversations" class="conversation-item"
+                (click)="navigateToConversation(conversation.id)">
+                <div>
+                    <p class="conversation-title" [title]="conversation.title">{{ conversation.title || 'Sem título'
+                        }}
+                    </p>
+                    <small class="conversation-date">{{ conversation.createdAt | date:'short' }}</small>
+                </div>
+
+                <div>
+                    <button (click)="deleteConversation(conversation.id)" class="delete-button">
+                        <i class="pi pi-trash"></i>
+                    </button>
+                </div>
+
+            </li>
+            <div *ngIf="conversationsSection.isLoading" class="loading-spinner">
+                <i class="pi pi-spin pi-spinner"></i>
+            </div>
+        </ul>
 
         <div class="footer-menu">
             <div class="logout-container">

@@ -18,6 +18,38 @@ export class ConversationService {
     url = environment.apiUrl;
     sufix = '/conversations';
 
+    createConversation(title: string = 'Nova Conversa'): Observable<IConversation> {
+        const userId = UserHelper.getUserInfo()?.id;
+
+        if (!userId) {
+            throw new Error('Usuário não autenticado');
+        }
+
+        return this.http.post<IConversation>(
+            `${this.url}${this.sufix}`,
+            {
+                userId,
+                title,
+                messages: []
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${this._authService.getValidToken()}`,
+                }
+            }
+        );
+    }
+
+    deleteConversation(conversationId: string): Observable<void> {
+        return this.http.delete<void>(`${this.url}${this.sufix}/${conversationId}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${this._authService.getValidToken()}`,
+                }
+            }
+        );
+    }
+
     getConversationById(conversationId: string): Observable<IConversation> {
         return this.http.get<IConversation>(`${this.url}${this.sufix}/${conversationId}`, {
             headers: {
@@ -25,6 +57,29 @@ export class ConversationService {
             },
         });
     }
+
+    getConversationsPaginated(page: number = 0, limit: number = 10): Observable<IConversation[]> {
+        const userId = UserHelper.getUserInfo()?.id;
+
+        if (!userId) {
+            throw new Error('Usuário não autenticado');
+        }
+
+        const params = new URLSearchParams({
+            page: page.toString(),
+            limit: limit.toString(),
+        });
+
+        return this.http.get<IConversation[]>(
+            `${this.url}${this.sufix}/user/${userId}?${params.toString()}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${this._authService.getValidToken()}`,
+                }
+            }
+        );
+    }
+
 
     getLastConversations(): Observable<IConversation[]> {
         const userId = UserHelper.getUserInfo()?.id;

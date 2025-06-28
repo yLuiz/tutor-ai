@@ -64,13 +64,10 @@ export class UserRegisterComponent {
         name, email, password
       }).subscribe({
         next: () => {
-          // Handle successful registration
-          console.log('User registered successfully');
           this.form.reset();
           this._router.navigate(['/login']);
         },
         error: (error) => {
-          // Handle registration error
           console.error('Registration failed', error);
         }
       })
