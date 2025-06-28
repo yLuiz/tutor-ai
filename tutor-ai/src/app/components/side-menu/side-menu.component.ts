@@ -132,6 +132,30 @@ export class SideMenuComponent implements OnInit {
     });
   }
 
+  shareConversation(conversationId: string) {
+    this._conversationService.shareConversation(conversationId).subscribe({
+      next: ({ sharedId }) => {
+        const url = `${window.location.origin}/shared/${sharedId}`;
+        navigator.clipboard.writeText(url).then(() => {
+          this._messageService.add({
+            severity: 'success',
+            summary: 'Compartilhado!',
+            detail: 'Link copiado para a área de transferência',
+            life: 3000
+          });
+        });
+      },
+      error: () => {
+        this._messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Falha ao compartilhar a conversa',
+          life: 3000
+        });
+      }
+    });
+  }
+
   loadConversations() {
     if (this.conversationsSection.isLoading || !this.conversationsSection.hasMore) {
       this._router.navigate(['/chat']);

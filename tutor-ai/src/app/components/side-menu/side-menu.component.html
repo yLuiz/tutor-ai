@@ -72,6 +72,10 @@
                 </div>
 
                 <div>
+                    <button (click)="shareConversation(conversation.id); $event.stopPropagation()" class="share-button"
+                        title="Compartilhar">
+                        <i class="pi pi-share-alt"></i>
+                    </button>
                     <button (click)="deleteConversation(conversation.id)" class="delete-button">
                         <i class="pi pi-trash"></i>
                     </button>

@@ -80,6 +80,21 @@ export class ConversationService {
         );
     }
 
+    shareConversation(sharedId: string): Observable<{ sharedId: string }> {
+        return this.http.post<{ sharedId: string }>(`${this.url}${this.sufix}/share/${sharedId}`, undefined, {
+            headers: {
+                'Authorization': `Bearer ${this._authService.getValidToken()}`,
+            },
+        });
+    }
+
+    getSharedConversation(sharedId: string): Observable<IConversation> {
+        return this.http.get<IConversation>(`${this.url}${this.sufix}/shared/${sharedId}`, {
+            headers: {
+                'Authorization': `Bearer ${this._authService.getValidToken()}`,
+            },
+        });
+    }
 
     getLastConversations(): Observable<IConversation[]> {
         const userId = UserHelper.getUserInfo()?.id;

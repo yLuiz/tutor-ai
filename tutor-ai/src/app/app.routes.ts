@@ -8,6 +8,7 @@ import { LoginFormComponent } from './components/forms/login-form/login-form.com
 import { UserRegisterComponent } from './pages/login/user-register/user-register.component';
 import { loginGuard } from './guards/login.guard';
 import { authGuard } from './guards/auth.guard';
+import { SharedChatComponent } from './pages/shared-chat/shared-chat.component';
 
 export const routes: Routes = [
     {
@@ -24,6 +25,11 @@ export const routes: Routes = [
             }
         ],
         canActivate: [loginGuard]
+    },
+    {
+        path: 'shared/:id',
+        component: SharedChatComponent,
+        pathMatch: 'full',
     },
     {
         path: '',
@@ -48,5 +54,5 @@ export const routes: Routes = [
             }
         ],
         canActivateChild: [authGuard]
-    }
+    },
 ];

@@ -262,13 +262,21 @@
     cursor: pointer;
     border-bottom: 1px solid #eee;
 
+    .share-button,
     .delete-button {
-        background: none;
+        background: transparent;
         border: none;
-        color: #dc2626;
         cursor: pointer;
-        padding: 0.25rem;
-        margin-left: auto;
+        color: #888;
+        font-size: 1rem;
+    }
+
+    .share-button:hover {
+        color: #007ad9;
+    }
+
+    .delete-button:hover {
+        color: #d9534f;
     }
 }
 

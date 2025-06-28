@@ -11,7 +11,7 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export function authenticateToken(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization;    
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ error: 'Token não fornecido' });

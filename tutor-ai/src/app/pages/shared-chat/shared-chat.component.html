@@ -1,0 +1,40 @@
+<section class="chat">
+  <div class="chat-toolbar">
+    <div>
+      <h2>{{ title }}</h2>
+      <p>Essa conversa foi compartilhada publicamente</p>
+    </div>
+  </div>
+
+  <div class="chat-container">
+    <div *ngIf="isLoading" class="loading-spinner">
+      <i class="pi pi-spin pi-spinner"></i> Carregando...
+    </div>
+
+    <div *ngIf="notFound" class="not-found">
+      <p>Conversa não encontrada ou link inválido.</p>
+    </div>
+
+    <div #scrollContainer class="messages" *ngIf="!isLoading && !notFound">
+      <div *ngFor="let msg of messages" class="message"
+        [ngClass]="{ 'user': msg.role === 'user', 'bot': msg.role === 'bot' }">
+
+        <ng-container *ngIf="msg.role === 'bot'">
+          <div class="bot-avatar-container">
+            <img src="../../../assets/chat-bot.svg" alt="Bot" class="avatar avatar-left" />
+          </div>
+        </ng-container>
+
+        <div class="message-card">
+          {{ msg.content }}
+        </div>
+
+        <ng-container *ngIf="msg.role === 'user'">
+          <div class="user-avatar-container">
+            <img src="../../../assets/user.svg" alt="Usuário" class="avatar avatar-right" />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</section>
