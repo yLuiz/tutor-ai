@@ -10,6 +10,7 @@ const {
 } = process.env;
 
 const CONFIG = {
+    IS_PROD: process.env.MODE === 'prod',
     PORT: process.env.PORT || 3000,
     CORRECT_BY_AI: Number(process.env.CORRECT_BY_AI) === 1 ? true : false || false,
     JWT_SECRET: process.env.JWT_SECRET || '',

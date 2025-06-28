@@ -150,6 +150,8 @@
     border-radius: 8px;
     transition: background-color 0.2s;
     color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+
 
     .action-item {
         cursor: pointer;
@@ -160,6 +162,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%;
 }
 
 .conversation-actions a {
@@ -168,11 +171,17 @@
     gap: 10px;
     text-decoration: none;
     padding: 0.75rem 1rem;
+    width: 100%;
     border-radius: 8px;
     transition: background-color 0.2s;
     color: #374151;
 }
 
+.conversation-actions a:hover,
+.conversation-actions a.active {
+    background-color: #eefff6;
+    color: #08a845;
+}
 
 .icon {
     font-size: 1.25rem;
@@ -241,7 +250,6 @@
     flex-grow: 1;
     overflow-y: auto;
     border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
 }
 
 .conversation-item {

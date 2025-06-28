@@ -1,171 +1,76 @@
 import { Router } from "express";
-import { UserRepository } from "../../db/repositories/UserRepository";
-import { UserRoles } from "../../db/entities/UserEntity";
+import { UserService } from "./user.service";
+
 
 const router = Router();
-const userRepository = new UserRepository();
+const userService = new UserService();
 
-router.post('/users', async (req: any, res: any) => {
-    const { name, email, password, role, isActive, bio } = req.body;
-
+router.post('/users', async (req, res) => {
     try {
-
-        const existingUser = await userRepository.findByEmail(email);
-        if (existingUser) {
-            return res.status(400).json({ error: 'Usuário já existe' });
-        }
-
-        const newUser = await userRepository.create({
-            name,
-            email,
-            password,
-            role: role || UserRoles.COMMON,
-            bio: bio || '',
-            isActive: isActive !== undefined ? isActive : true,
-        });
-
-        res.status(201).json(newUser);
-
-    } catch (error) {
+        const newUser = await userService.createUser(req.body);
+        const { password, ...userData } = newUser;
+        res.status(201).json(userData);
+    } catch (error: any) {
         console.error("Erro ao criar usuário:", error);
-        res.status(500).json({ error: "Erro ao criar usuário" });
+        res.status(400).json({ error: error.message });
     }
 });
 
-router.get('/users', async (req: any, res: any) => {
+router.get('/users', async (req, res) => {
     try {
-        const { email } = req.query;
-        if (email?.length) {
-            const user = await userRepository.findByEmail(email as string);
-            return res.status(200).json(user);
-        }
-
-        const userList = await userRepository.findAll();
-
-        res.status(200).json(userList);
-
+        const users = await userService.getUsers(req.query.email as string);
+        res.json(users);
     } catch (error) {
-        console.error("Erro ao buscar usuários:", error);
         res.status(500).json({ error: "Erro ao buscar usuários" });
     }
 });
 
 router.get('/users/:id', async (req: any, res: any) => {
-    const { id } = req.params;
-
     try {
-        const user = await userRepository.findById(id);
-        if (!user) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
-        }
+        const user = await userService.getUserById(req.params.id);
+        if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
 
-        // Retorna os dados completos do usuário
-        const { password, ...userData } = user; // Remove a senha do retorno
+        const { password, ...userData } = user;
         res.json(userData);
-
     } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
         res.status(500).json({ error: "Erro ao buscar usuário" });
     }
 });
 
-
-router.patch('/users/:id', async (req: any, res: any) => {
-    const { id } = req.params;
-    const { name, email, password, role, isActive, bio } = req.body;
-
+router.patch('/users/:id', async (req, res) => {
     try {
-        const user = await userRepository.findById(id);
-        if (!user) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
-        }
-
-        let updatePayload = {
-            id: user.id,
-            name: name ? name : user.name,
-            email: email ? email : user.email,
-            password: password ? password : user.password,
-            role: role ? role : user.role,
-            bio: bio ? bio : user.bio,
-            isActive: isActive !== undefined ? isActive : user.isActive,
-            lastAccess: user.lastAccess,
-            correctedTexts: user.correctedTexts,
-        }
-
-        const updatedUser = await userRepository.update(id, updatePayload);
-        res.json(updatedUser);
-
-    } catch (error) {
-        console.error("Erro ao atualizar usuário:", error);
-        res.status(500).json({ error: "Erro ao atualizar usuário" });
+        const updated = await userService.updateUser(req.params.id, req.body);
+        res.json(updated);
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
     }
 });
 
-
-router.patch('/users/profile/:id', async (req: any, res: any) => {
-    const { id } = req.params;
-    const { name, email, bio } = req.body;
-
+router.patch('/users/profile/:id', async (req, res) => {
     try {
-        const user = await userRepository.findById(id);
-        if (!user) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
-        }
-
-        const updatedUser = await userRepository.updateProfile(id, {
-            name: name ? name : user.name,
-            email: email ? email : user.email,
-            bio: bio ? bio : user.bio,
-        });
-
-        res.json(updatedUser);
-
-    } catch (error) {
-        console.error("Erro ao atualizar usuário:", error);
-        res.status(500).json({ error: "Erro ao atualizar usuário" });
+        const updated = await userService.updateProfile(req.params.id, req.body);
+        res.json(updated);
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
     }
 });
 
-router.patch('/users/change-password/:id', async (req: any, res: any) => {
-    const { id } = req.params;
+router.patch('/users/change-password/:id', async (req, res) => {
     const { oldPassword, newPassword } = req.body;
-
     try {
-
-        const user = await userRepository.findById(id);
-        if (!user) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
-        }
-
-        if (user.password !== oldPassword) {
-            return res.status(400).json({ error: 'Senha antiga incorreta' });
-        }
-
-        await userRepository.update(id, { password: newPassword });
-        res.json({ message: 'Senha atualizada com sucesso' });
-
-    } catch (error) {
-        console.error("Erro ao atualizar senha:", error);
-        res.status(500).json({ error: "Erro ao atualizar senha" });
+        const result = await userService.changePassword(req.params.id, oldPassword, newPassword);
+        res.json(result);
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
     }
 });
 
-router.delete('/users/:id', async (req: any, res: any) => {
-    const { id } = req.params;
-
+router.delete('/users/:id', async (req, res) => {
     try {
-        const user = await userRepository.findById(id);
-        if (!user) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
-        }
-
-        await userRepository.delete(id);
-
+        await userService.deleteUser(req.params.id);
         res.status(204).send();
-
-    } catch (error) {
-        console.error("Erro ao excluir usuário:", error);
-        res.status(500).json({ error: "Erro ao excluir usuário" });
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
     }
 });
 

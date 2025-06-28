@@ -1,7 +1,7 @@
-
 import moment from 'moment';
+import bcrypt from 'bcrypt';
 import { UserRepository } from '../repositories/UserRepository';
-
+import { CONFIG } from '../../config/config';
 
 const UserRoles: { ADMIN: "admin"; COMMON: "common" } = {
     ADMIN: "admin",
@@ -45,16 +45,22 @@ const defaultUsers = [
 ];
 
 export async function seedDefaultUsers() {
+
+    if (CONFIG.IS_PROD) return;
+
     const userRepository = new UserRepository();
 
     for (const user of defaultUsers) {
         const exists = await userRepository.existsByEmail(user.email);
         if (!exists) {
-            // Convert lastAccess to Date
+            const hashedPassword = await bcrypt.hash(user.password, 10);
+
             const userToCreate = {
                 ...user,
+                password: hashedPassword,
                 lastAccess: moment(user.lastAccess).toDate(),
             };
+
             await userRepository.create(userToCreate);
             console.log(`Usuário criado: ${user.email}`);
         } else {

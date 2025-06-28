@@ -173,51 +173,6 @@ export class ChatComponent implements OnInit {
 
   }
 
-  // private _sendMessageToServer(args: {
-  //   loadingMsg: { sender: 'bot'; originalText: string; loading: boolean },
-  //   trimmed: string
-  // }) {
-
-  //   this.scrollToBottom();
-
-  //   const { loadingMsg, trimmed } = args;
-
-  //   this._chatService.sendMessage(trimmed).subscribe({
-  //     next: (response) => {
-
-  //       const index = this.messages.indexOf(loadingMsg);
-  //       if (index !== -1) this.messages.splice(index, 1);
-
-
-  //       this.messages.push({
-  //         sender: 'bot',
-  //         originalText: trimmed,
-  //         explaination: response.explicacao,
-  //         correction: response.correcao
-  //       });
-
-  //       this.handleLoading();
-  //     },
-  //     error: (error) => {
-  //       console.error('Erro ao enviar mensagem:', error);
-
-  //       const index = this.messages.indexOf(loadingMsg);
-  //       if (index !== -1) this.messages.splice(index, 1);
-
-
-  //       this.messages.push({
-  //         sender: 'bot',
-  //         originalText: 'Ocorreu um erro ao processar sua frase, o servidor pode está fora do ar. Tente novamente mais tarde.'
-  //       });
-
-  //       this.handleLoading();
-  //     }
-  //   })
-  //     .add(() => {
-  //       this.scrollToBottom();
-  //     });
-  // }
-
   countConversation = 0;
 
   startNewConversation(message?: string) {
@@ -228,10 +183,12 @@ export class ChatComponent implements OnInit {
 
           this.countConversation++;
 
-          this._sendMessageToServerNewVersion({
-            loadingMsg: { sender: 'bot', originalText: 'Iniciando nova conversa...', loading: true },
-            trimmed: message || ''
-          })
+          if (message && message.length > 0) {
+            this._sendMessageToServerNewVersion({
+              loadingMsg: { sender: 'bot', originalText: 'Iniciando nova conversa...', loading: true },
+              trimmed: message || ''
+            });
+          }
 
           this._router.navigate(['/chat'], { queryParams: { conversationId: conversation.id } });
 

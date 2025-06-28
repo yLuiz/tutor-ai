@@ -33,9 +33,14 @@ export class UserRepository {
         };
     }
 
-    async create(userData: Partial<User>): Promise<User> {
+    async create(userData: Partial<User>): Promise<User & { id: string }> {
         const createdUser = new UserModel(userData);
-        return await createdUser.save();
+
+        const savedUser = await createdUser.save();
+        return {
+            ...savedUser,
+            id: savedUser._id.toString(),
+        };
     }
 
     async update(id: string, updateData: Partial<User>): Promise<User | null> {
